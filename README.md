@@ -1,80 +1,25 @@
-Composer Proxy
-==============
+## Composer Proxy
 
-composer-proxy can cache package information for composer repository.
-It's an effective way to use composer when central repository
-(packagist.org) server is too far.
 
-There is an available server in Japan.
-(http://composer-proxy.jp/)
-
-System Requirement
-------------------
-
-- PHP5.3+
-
-How to install
+### Installation
 --------------
 
-Clone it.
+1. Clone it.
 
-    $ git clone https://github.com/kawahara/composer-proxy
+    $ git clone https://github.com/HyanCat/composer-proxy
 
-Resolve dependencies with composer (See https://getcomposer.org/)
+2. Resolve dependencies with composer
 
-    $ cd /path/to/app
     $ composer install
 
-Change permission for cache directories
+3. Copy `config.example.php` and rename to `config.php`, then change configuration for application
 
-    $ cd /path/to/app
+4. Change permission for cache directories if needed
+
     $ chmod 777 cache
-    $ chmod 777 web/proxy
 
-Change configuration for application in `app.php`
-
-    # replace to your configuration
-    $app['title'] = "Composer Proxy JP";
-    $app['base_url'] = "http://composer-proxy.jp/";
-
-
-Example: Configure web server (Apache)
-
-    <IfModule mod_rewrite.c>
-      Options -MultiViews
-
-      RewriteEngine On
-      RewriteBase /path/to/app/web
-      RewriteCond %{REQUEST_FILENAME} !-f
-      RewriteRule ^ index.php [QSA,L]
-    </IfModule>
-
-Example: Configure web server (Nginx)
-
-    server {
-          listen 80;
-          listen [::]:80 default_server ipv6only=on;
-
-          root /path/to/app/web;
-          server_name localhost;
-
-          location / {
-                  index index.php index.html index.htm;
-                  try_files $uri @rewriteapp;
-          }
-
-          location @rewriteapp {
-                  rewrite ^(.*)$ /index.php/$1 last;
-          }
-
-          location ~ \.php(/|$) {
-                  fastcgi_pass unix:/var/run/php5-fpm.sock;
-                  fastcgi_split_path_info ^(.+\.php)(/.*)$;
-                  include fastcgi_params;
-                  fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                  fastcgi_param  HTTPS off;
-          }
-    }
+### Console Usage
+--------------
 
 Register the script to crontab
 

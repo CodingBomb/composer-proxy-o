@@ -32,7 +32,7 @@ $app->get('{rep}/packages.json', function ($rep) use ($app) {
 
 	$responseJson['providers-url'] = "/" . $rep . "/p/%package%$%hash%.json";
 
-	$path = '';
+	$path = '/';
 	$file = 'packages.json';
 
 	$localPath = $app['cache_dir'] . "/" . $rep . $path . $file;
